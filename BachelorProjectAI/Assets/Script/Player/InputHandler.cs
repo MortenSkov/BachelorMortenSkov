@@ -32,5 +32,19 @@ public class InputHandler : MonoBehaviour
         inputActions.Disable();
     }
 
+    public void TickInput(float delta)
+    {
+        MoveInput(delta);
+    }
+
+    private void MoveInput(float delta)
+    {
+        horizontal = movementInput.x;
+        vertical = movementInput.y;
+        moveAmout = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical));
+        mouseX = cameraInput.x;
+        mouseY = cameraInput.y;
+    }
+
 
 }
