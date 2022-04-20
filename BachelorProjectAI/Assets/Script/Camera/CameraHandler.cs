@@ -41,10 +41,32 @@ public class CameraHandler : MonoBehaviour
         ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
     }
 
+    /// <summary>
+    /// Causes our camera to follow the transform of our target position
+    /// </summary>
+    /// <param name="delta">Delta time passed since the last update called</param>
     public void FollowTarget(float delta)
     {
         Vector3 targetPosition = Vector3.Lerp(myTransform.position, targetTransform.position, delta / followSpeed);
         myTransform.position = targetPosition;
+    }
+
+    public void HandleCameraRotation(float delta, float mouseXInput, float mouseYInput)
+    {
+        lookAngle += (mouseXInput * lookSpeed) / delta;
+        pivotAngle -= (mouseYInput * pivotSpeed) / delta;
+        pivotAngle = Mathf.Clamp(pivotAngle, minimumPivot, maximumPivot);
+
+        Vector3 rotation = Vector3.zero;
+        rotation.y = lookAngle;
+        Quaternion targetRotation = Quaternion.Euler(rotation);
+        myTransform.rotation = targetRotation;
+
+        rotation = Vector3.zero;
+        rotation.x = pivotAngle;
+
+        targetRotation = Quaternion.Euler(rotation);
+        cameraPivotTransform.localRotation = targetRotation;
     }
 
 
