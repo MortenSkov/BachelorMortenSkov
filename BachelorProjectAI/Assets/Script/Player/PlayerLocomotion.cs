@@ -10,6 +10,8 @@ public class PlayerLocomotion : MonoBehaviour
 
     [HideInInspector]
     public Transform myTransform;
+    [HideInInspector]
+    public AnimationHandler animHandler;
 
     public new Rigidbody rigidbody;
     public GameObject normalCamera; // named it normal camera, since later on we're adding a Lock-On camera
@@ -27,8 +29,10 @@ public class PlayerLocomotion : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
         inputHandler = GetComponent<InputHandler>();
+        animHandler = GetComponentInChildren<AnimationHandler>();
         cameraObject = Camera.main.transform;
         myTransform = transform;
+        animHandler.Initialize();
     }
 
     public void Update()
@@ -46,6 +50,13 @@ public class PlayerLocomotion : MonoBehaviour
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
         rigidbody.velocity = projectedVelocity;
+
+        animHandler.UpdateAnimatorValues(inputHandler.moveAmout, 0);
+
+        if (animHandler.canRotate)
+        {
+            HandleRotation(delta);
+        }
     }
 
     #region Movement
