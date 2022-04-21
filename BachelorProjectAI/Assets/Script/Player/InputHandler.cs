@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class InputHandler : MonoBehaviour
     public float moveAmout;
     public float mouseX;
     public float mouseY;
+
+    public bool b_Input;
+    public bool rollFlag;
 
     PlayerControls inputActions; // Made through the installed Unity Package Manager - Input Actions
     CameraHandler cameraHandler;
@@ -52,6 +56,7 @@ public class InputHandler : MonoBehaviour
     public void TickInput(float delta)
     {
         MoveInput(delta);
+        HandleRollingInput(delta);
     }
 
     private void MoveInput(float delta)
@@ -63,5 +68,14 @@ public class InputHandler : MonoBehaviour
         mouseY = cameraInput.y;
     }
 
+    private void HandleRollingInput(float delta)
+    {
+        b_Input = inputActions.PlayerActions.Roll.phase == InputActionPhase.Performed; // detects wether or not the 'Roll' input key is being pressed
+
+        if (b_Input)
+        {
+            rollFlag = true;
+        }
+    }
 
 }
