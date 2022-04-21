@@ -13,6 +13,7 @@ public class InputHandler : MonoBehaviour
 
     public bool b_Input;
     public bool rollFlag;
+    public bool isInteracting;
 
     PlayerControls inputActions; // Made through the installed Unity Package Manager - Input Actions
     CameraHandler cameraHandler;
