@@ -16,29 +16,12 @@ public class InputHandler : MonoBehaviour
     public bool rollFlag;
     public bool sprintFlag;
     public float rollInputTimer;
-    public bool isInteracting;
 
     PlayerControls inputActions; // Made through the installed Unity Package Manager - Input Actions
-    CameraHandler cameraHandler;
 
     Vector2 movementInput;
     Vector2 cameraInput;
 
-    private void Awake()
-    {
-        cameraHandler = CameraHandler.singleton;
-    }
-
-    private void FixedUpdate()
-    {
-        float delta = Time.fixedDeltaTime;
-        
-        if(cameraHandler != null)
-        {
-            cameraHandler.FollowTarget(delta);
-            cameraHandler.HandleCameraRotation(delta, mouseX, mouseY);
-        }
-    }
 
     public void OnEnable()
     {
@@ -83,7 +66,7 @@ public class InputHandler : MonoBehaviour
         }
         else
         {
-            if(rollInputTimer > 0 && rollInputTimer < 0.25f) // check if below check was at- 0.5f
+            if(rollInputTimer > 0 && rollInputTimer < 0.5f) // check if below check was at- 0.5f
             {
                 sprintFlag = false;
                 rollFlag = true;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
 {
+    PlayerManager playerManager;
     Transform cameraObject;
     InputHandler inputHandler;
     Vector3 moveDirection;
@@ -16,37 +17,25 @@ public class PlayerLocomotion : MonoBehaviour
     public new Rigidbody rigidbody;
     public GameObject normalCamera; // named it normal camera, since later on we're adding a Lock-On camera
 
-    [Header("Stats")][SerializeField]
+    [Header("Movement Stats")]
+    [SerializeField]
     private float movementSpeed = 5;
-
     [SerializeField]
     float sprintSpeed = 7;
     [SerializeField]
     private float rotationSpeed = 10;
 
-    public bool isSprinting;
-
-
 
     // Start is called before the first frame update
     void Start()
     {
+        playerManager = GetComponent<PlayerManager>();
         rigidbody = GetComponent<Rigidbody>();
         inputHandler = GetComponent<InputHandler>();
         animHandler = GetComponentInChildren<AnimationHandler>();
         cameraObject = Camera.main.transform;
         myTransform = transform;
         animHandler.Initialize();
-    }
-
-    public void Update()
-    {
-        float delta = Time.deltaTime;
-
-        isSprinting = inputHandler.b_Input;
-        inputHandler.TickInput(delta);
-        HandleMovement(delta);
-        HandleRollingAndSprinting(delta);
     }
 
     #region Movement
@@ -97,7 +86,7 @@ public class PlayerLocomotion : MonoBehaviour
         if (inputHandler.sprintFlag)
         {
             speed = sprintSpeed;
-            isSprinting = true;
+            playerManager.isSprinting = true;
             moveDirection *= speed;
         }
         else
@@ -108,7 +97,7 @@ public class PlayerLocomotion : MonoBehaviour
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
         rigidbody.velocity = projectedVelocity;
 
-        animHandler.UpdateAnimatorValues(inputHandler.moveAmout, 0, isSprinting);
+        animHandler.UpdateAnimatorValues(inputHandler.moveAmout, 0, playerManager.isSprinting);
 
         if (animHandler.canRotate)
         {

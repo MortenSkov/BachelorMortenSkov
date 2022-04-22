@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class AnimationHandler : MonoBehaviour
 {
+    PlayerManager playerManager;
     public Animator anim;
-    public InputHandler inputHandler;
-    public PlayerLocomotion playerLocomotion;
+    InputHandler inputHandler;
+    PlayerLocomotion playerLocomotion;
     private int vertical;
     private int horizontal;
     public bool canRotate;
 
     public void Initialize()
     {
+        playerManager = GetComponentInParent<PlayerManager>();
         anim = GetComponent<Animator>();
         inputHandler = GetComponentInParent<InputHandler>();
         playerLocomotion = GetComponentInParent<PlayerLocomotion>();
@@ -97,17 +99,17 @@ public class AnimationHandler : MonoBehaviour
         canRotate = false;
     }
 
-    //private void OnAnimatorMove()
-    //{
-    //    if (inputHandler.isInteracting == false)
-    //        return;
+    private void OnAnimatorMove()
+    {
+        if (playerManager.isInteracting == false)
+            return;
 
-    //    float delta = Time.deltaTime;
-    //    playerLocomotion.rigidbody.drag = 0;
-    //    Vector3 deltaPosition = anim.deltaPosition;
-    //    deltaPosition.y = 0;
-    //    Vector3 velocity = deltaPosition / delta;
-    //    playerLocomotion.rigidbody.velocity = velocity;
-    //}
+        float delta = Time.deltaTime;
+        playerLocomotion.rigidbody.drag = 0;
+        Vector3 deltaPosition = anim.deltaPosition; // might be causing the 'stuck' issue, since actual position of our avatar isn't moving during the original animation recording
+        deltaPosition.y = 0;
+        Vector3 velocity = deltaPosition / delta;
+        playerLocomotion.rigidbody.velocity += velocity;
+    }
 
 }
