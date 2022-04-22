@@ -5,6 +5,8 @@ using UnityEngine;
 public class AnimationHandler : MonoBehaviour
 {
     public Animator anim;
+    public InputHandler inputHandler;
+    public PlayerLocomotion playerLocomotion;
     private int vertical;
     private int horizontal;
     public bool canRotate;
@@ -12,6 +14,8 @@ public class AnimationHandler : MonoBehaviour
     public void Initialize()
     {
         anim = GetComponent<Animator>();
+        inputHandler = GetComponentInParent<InputHandler>();
+        playerLocomotion = GetComponentInParent<PlayerLocomotion>();
         vertical = Animator.StringToHash("Vertical");
         horizontal = Animator.StringToHash("Horizontal");
     }
@@ -85,6 +89,19 @@ public class AnimationHandler : MonoBehaviour
     public void StopRotation()
     {
         canRotate = false;
+    }
+
+    private void OnAnimatorMove()
+    {
+        if (inputHandler.isInteracting == false)
+            return;
+
+        float delta = Time.deltaTime;
+        playerLocomotion.rigidbody.drag = 0;
+        Vector3 deltaPosition = anim.deltaPosition;
+        deltaPosition.y = 0;
+        Vector3 velocity = deltaPosition / delta;
+        playerLocomotion.rigidbody.velocity = velocity;
     }
 
 }
