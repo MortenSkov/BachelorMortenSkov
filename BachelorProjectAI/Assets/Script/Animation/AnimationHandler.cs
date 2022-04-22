@@ -20,7 +20,7 @@ public class AnimationHandler : MonoBehaviour
         horizontal = Animator.StringToHash("Horizontal");
     }
 
-    public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement)
+    public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement, bool isSprinting)
     {
         // Vertical
         float v = 0;
@@ -70,6 +70,12 @@ public class AnimationHandler : MonoBehaviour
             h = 0;
         }
 
+        if (isSprinting)
+        {
+            v = 2;
+            h = horizontalMovement;
+        }
+
         anim.SetFloat(vertical, v, 0.1f, Time.deltaTime);
         anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
     }
@@ -91,17 +97,17 @@ public class AnimationHandler : MonoBehaviour
         canRotate = false;
     }
 
-    private void OnAnimatorMove()
-    {
-        if (inputHandler.isInteracting == false)
-            return;
+    //private void OnAnimatorMove()
+    //{
+    //    if (inputHandler.isInteracting == false)
+    //        return;
 
-        float delta = Time.deltaTime;
-        playerLocomotion.rigidbody.drag = 0;
-        Vector3 deltaPosition = anim.deltaPosition;
-        deltaPosition.y = 0;
-        Vector3 velocity = deltaPosition / delta;
-        playerLocomotion.rigidbody.velocity = velocity;
-    }
+    //    float delta = Time.deltaTime;
+    //    playerLocomotion.rigidbody.drag = 0;
+    //    Vector3 deltaPosition = anim.deltaPosition;
+    //    deltaPosition.y = 0;
+    //    Vector3 velocity = deltaPosition / delta;
+    //    playerLocomotion.rigidbody.velocity = velocity;
+    //}
 
 }
