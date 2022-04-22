@@ -99,17 +99,17 @@ public class AnimationHandler : MonoBehaviour
         canRotate = false;
     }
 
-    private void OnAnimatorMove()
-    {
-        if (playerManager.isInteracting == false)
-            return;
+    //private void OnAnimatorMove()
+    //{
+    //    if (playerManager.isInteracting == false)
+    //        return;
 
-        float delta = Time.deltaTime;
-        playerLocomotion.rigidbody.drag = 0;
-        Vector3 deltaPosition = anim.deltaPosition; // might be causing the 'stuck' issue, since actual position of our avatar isn't moving during the original animation recording
-        deltaPosition.y = 0;
-        Vector3 velocity = deltaPosition / delta;
-        playerLocomotion.rigidbody.velocity += velocity;
-    }
+    //    float delta = Time.deltaTime;
+    //    playerLocomotion.rigidbody.drag = 0;
+    //    Vector3 deltaPosition = anim.deltaPosition; // might be causing the 'stuck' issue, since actual position of our avatar isn't moving during the original animation recording
+    //    deltaPosition.y = 0;
+    //    Vector3 velocity = deltaPosition / delta;
+    //    playerLocomotion.rigidbody.velocity = velocity;
+    //}
 
 }

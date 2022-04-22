@@ -36,7 +36,7 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField]
     private float rotationSpeed = 10;
     [SerializeField]
-    private float fallingSpeed = 45;
+    private float fallingSpeed;
 
 
     // Start is called before the first frame update
@@ -90,6 +90,9 @@ public class PlayerLocomotion : MonoBehaviour
     public void HandleMovement(float delta)
     {
         if (inputHandler.rollFlag)
+            return;
+
+        if (playerManager.isInteracting)
             return;
 
         moveDirection = cameraObject.forward * inputHandler.vertical;
@@ -159,8 +162,8 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (playerManager.isInAir)
         {
-            rigidbody.AddForce(-Vector3.up * fallingSpeed);
-            rigidbody.AddForce(moveDirection * fallingSpeed / 5f); // makes it so, if player is walking off the edge, they are kicked off abit- so they don't get stuck on the edge (hopping off the edge w/ a little bit of force)
+            rigidbody.AddForce(-Vector3.up * fallingSpeed / 2f);
+            rigidbody.AddForce(moveDirection * fallingSpeed / 10f); // makes it so, if player is walking off the edge, they are kicked off abit- so they don't get stuck on the edge (hopping off the edge w/ a little bit of force)
         }
 
         Vector3 dir = moveDirection;
@@ -183,6 +186,7 @@ public class PlayerLocomotion : MonoBehaviour
                 {
                     Debug.Log("You were in the air for " + inAirTimer);
                     animHandler.PlayTargetAnimation("Land", true);
+                    inAirTimer = 0;
                 }
                 else
                 {
@@ -214,17 +218,26 @@ public class PlayerLocomotion : MonoBehaviour
             }
         }
 
-        if (playerManager.isGrounded)
+        if(playerManager.isInteracting || inputHandler.moveAmout > 0)
         {
-            if(playerManager.isInteracting || inputHandler.moveAmout > 0)
-            {
-                myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, Time.deltaTime);
-            }
-            else
-            {
-                myTransform.position = targetPosition;
-            }
+            myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, delta / 0.1f);
         }
+        else
+        {
+            myTransform.position = targetPosition;
+        }
+
+        //if (playerManager.isGrounded)
+        //{
+        //    if(playerManager.isInteracting || inputHandler.moveAmout > 0)
+        //    {
+        //        myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, delta);
+        //    }
+        //    else
+        //    {
+        //        myTransform.position = targetPosition;
+        //    }
+        //}
     }
 
     #endregion
