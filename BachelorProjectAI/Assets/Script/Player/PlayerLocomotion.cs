@@ -17,17 +17,6 @@ public class PlayerLocomotion : MonoBehaviour
     public new Rigidbody rigidbody;
     public GameObject normalCamera; // named it normal camera, since later on we're adding a Lock-On camera
 
-    //[Header("Ground & Air Detection Stats")]
-    //[SerializeField]
-    //float groundDetectionRayStartPoint = 0.5f; // where the ray cast will begin - for ground detection (0.5f above our character transform, that is)
-    //[SerializeField]
-    //float minimumDistanceNeededToBeginFall = 1f;
-    //[SerializeField]
-    //float groundDirectionRayDistance = 0.2f; // used to offset the raycast to slightly more infront or behind the player
-
-    //LayerMask ignoreForGroundCheck;
-    //public float inAirTimer;
-
     [Header("Movement Stats")]
     [SerializeField]
     private float movementSpeed = 5;
@@ -35,8 +24,8 @@ public class PlayerLocomotion : MonoBehaviour
     float sprintSpeed = 7;
     [SerializeField]
     private float rotationSpeed = 10;
-    //[SerializeField]
-    //private float fallingSpeed;
+    [SerializeField]
+    private float walkingSpeed = 1;
 
 
     // Start is called before the first frame update
@@ -49,9 +38,6 @@ public class PlayerLocomotion : MonoBehaviour
         cameraObject = Camera.main.transform;
         myTransform = transform;
         animHandler.Initialize();
-
-        //playerManager.isGrounded = true;
-        //ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
     }
 
     #region Movement
@@ -89,8 +75,8 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleMovement(float delta)
     {
-        //if (inputHandler.rollFlag)
-        //    return;
+        if (inputHandler.rollFlag)
+            return;
 
         if (playerManager.isInteracting)
             return;
@@ -102,7 +88,7 @@ public class PlayerLocomotion : MonoBehaviour
 
         float speed = movementSpeed;
 
-        if (inputHandler.sprintFlag)
+        if (inputHandler.sprintFlag && inputHandler.moveAmout > 0.5f)
         {
             speed = sprintSpeed;
             playerManager.isSprinting = true;
@@ -110,7 +96,16 @@ public class PlayerLocomotion : MonoBehaviour
         }
         else
         {
-            moveDirection *= speed;
+            if(inputHandler.moveAmout < 0.5f)
+            {
+                moveDirection *= walkingSpeed;
+                playerManager.isSprinting = false;
+            }
+            else
+            {
+                moveDirection *= speed;
+                playerManager.isSprinting = false;
+            }
         }
 
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);

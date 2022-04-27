@@ -66,7 +66,7 @@ public class InputHandler : MonoBehaviour
         }
         else
         {
-            if(rollInputTimer > 0 && rollInputTimer < 0.25f) // check if below check was at- 0.5f
+            if(rollInputTimer > 0 && rollInputTimer < 0.5f) // check if below check was at- 0.5f
             {
                 sprintFlag = false;
                 rollFlag = true;
