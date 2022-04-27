@@ -7,14 +7,19 @@ public class PlayerAttack : MonoBehaviour
 
     AnimationHandler animHandler;
 
-    public void HandleLightAttack()
+    private void Awake()
     {
-
+        animHandler = GetComponentInChildren<AnimationHandler>();
     }
 
-    public void HandleHeavyAttack()
+    public void HandleLightAttack(string lightAttackName)
     {
+        animHandler.PlayTargetAnimation(lightAttackName, true);
+    }
 
+    public void HandleHeavyAttack(string heavyAttackName)
+    {
+        animHandler.PlayTargetAnimation(heavyAttackName, true);
     }
     
 }

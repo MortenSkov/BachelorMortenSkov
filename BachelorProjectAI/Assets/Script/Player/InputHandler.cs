@@ -12,16 +12,23 @@ public class InputHandler : MonoBehaviour
     public float mouseY;
 
     public bool b_Input;
+    public bool rb_Input;
+    public bool rt_Input;
 
     public bool rollFlag;
     public bool sprintFlag;
     public float rollInputTimer;
 
     PlayerControls inputActions; // Made through the installed Unity Package Manager - Input Actions
+    PlayerAttack playerAttack;
 
     Vector2 movementInput;
     Vector2 cameraInput;
 
+    private void Awake()
+    {
+        playerAttack = GetComponent<PlayerAttack>();
+    }
 
     public void OnEnable()
     {
@@ -44,6 +51,7 @@ public class InputHandler : MonoBehaviour
     {
         MoveInput(delta);
         HandleRollingInput(delta);
+        HandleAttackInput(delta);
     }
 
     private void MoveInput(float delta)
@@ -73,6 +81,22 @@ public class InputHandler : MonoBehaviour
             }
 
             rollInputTimer = 0;
+        }
+    }
+
+    private void HandleAttackInput(float delta)
+    {
+        inputActions.PlayerActions.RB.performed += i => rb_Input = true;
+        inputActions.PlayerActions.RT.performed += i => rt_Input = true;
+
+        if (rb_Input) // RB Input handles the RIGHT hand weapon's light attack
+        {
+            playerAttack.HandleLightAttack("LightAttack_01");
+        }
+
+        if (rt_Input)
+        {
+            playerAttack.HandleHeavyAttack("HeavyAttack_01");
         }
     }
 

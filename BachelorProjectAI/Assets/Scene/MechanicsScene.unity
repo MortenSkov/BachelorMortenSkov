@@ -902,6 +902,7 @@ GameObject:
   - component: {fileID: 1843040459}
   - component: {fileID: 1843040458}
   - component: {fileID: 1843040460}
+  - component: {fileID: 1843040461}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -974,6 +975,7 @@ MonoBehaviour:
   movementSpeed: 5
   sprintSpeed: 7
   rotationSpeed: 10
+  walkingSpeed: 2.5
 --- !u!114 &1843040459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -992,6 +994,8 @@ MonoBehaviour:
   mouseX: 0
   mouseY: 0
   b_Input: 0
+  rb_Input: 0
+  rt_Input: 0
   rollFlag: 0
   sprintFlag: 0
   rollInputTimer: 0
@@ -1009,6 +1013,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isInteracting: 0
   isSprinting: 0
+--- !u!114 &1843040461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843040454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80b939b56cb44e4469ac9478a603ef38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2089278687
 GameObject:
   m_ObjectHideFlags: 0
