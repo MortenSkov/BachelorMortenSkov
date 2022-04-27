@@ -17,16 +17,16 @@ public class PlayerLocomotion : MonoBehaviour
     public new Rigidbody rigidbody;
     public GameObject normalCamera; // named it normal camera, since later on we're adding a Lock-On camera
 
-    [Header("Ground & Air Detection Stats")]
-    [SerializeField]
-    float groundDetectionRayStartPoint = 0.5f; // where the ray cast will begin - for ground detection (0.5f above our character transform, that is)
-    [SerializeField]
-    float minimumDistanceNeededToBeginFall = 1f;
-    [SerializeField]
-    float groundDirectionRayDistance = 0.2f; // used to offset the raycast to slightly more infront or behind the player
+    //[Header("Ground & Air Detection Stats")]
+    //[SerializeField]
+    //float groundDetectionRayStartPoint = 0.5f; // where the ray cast will begin - for ground detection (0.5f above our character transform, that is)
+    //[SerializeField]
+    //float minimumDistanceNeededToBeginFall = 1f;
+    //[SerializeField]
+    //float groundDirectionRayDistance = 0.2f; // used to offset the raycast to slightly more infront or behind the player
 
-    LayerMask ignoreForGroundCheck;
-    public float inAirTimer;
+    //LayerMask ignoreForGroundCheck;
+    //public float inAirTimer;
 
     [Header("Movement Stats")]
     [SerializeField]
@@ -35,8 +35,8 @@ public class PlayerLocomotion : MonoBehaviour
     float sprintSpeed = 7;
     [SerializeField]
     private float rotationSpeed = 10;
-    [SerializeField]
-    private float fallingSpeed;
+    //[SerializeField]
+    //private float fallingSpeed;
 
 
     // Start is called before the first frame update
@@ -50,8 +50,8 @@ public class PlayerLocomotion : MonoBehaviour
         myTransform = transform;
         animHandler.Initialize();
 
-        playerManager.isGrounded = true;
-        ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
+        //playerManager.isGrounded = true;
+        //ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
     }
 
     #region Movement
@@ -89,8 +89,8 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleMovement(float delta)
     {
-        if (inputHandler.rollFlag)
-            return;
+        //if (inputHandler.rollFlag)
+        //    return;
 
         if (playerManager.isInteracting)
             return;
@@ -148,97 +148,85 @@ public class PlayerLocomotion : MonoBehaviour
         }
     }
 
-    public void HandleFalling(float delta, Vector3 moveDirection)
-    {
-        playerManager.isGrounded = false;
-        RaycastHit hit;
-        Vector3 origin = myTransform.position;
-        origin.y += groundDetectionRayStartPoint;
+    //public void HandleFalling(float delta, Vector3 moveDirection)
+    //{
+    //    playerManager.isGrounded = false;
+    //    RaycastHit hit;
+    //    Vector3 origin = myTransform.position;
+    //    origin.y += groundDetectionRayStartPoint;
 
-        if(Physics.Raycast(origin, myTransform.forward, out hit, 0.4f))
-        {
-            moveDirection = Vector3.zero;
-        }
+    //    if(Physics.Raycast(origin, myTransform.forward, out hit, 0.4f))
+    //    {
+    //        moveDirection = Vector3.zero;
+    //    }
 
-        if (playerManager.isInAir)
-        {
-            rigidbody.AddForce(-Vector3.up * fallingSpeed / 2f);
-            rigidbody.AddForce(moveDirection * fallingSpeed / 10f); // makes it so, if player is walking off the edge, they are kicked off abit- so they don't get stuck on the edge (hopping off the edge w/ a little bit of force)
-        }
+    //    if (playerManager.isInAir)
+    //    {
+    //        rigidbody.AddForce(-Vector3.up * fallingSpeed / 2f);
+    //        rigidbody.AddForce(moveDirection * fallingSpeed / 10f); // makes it so, if player is walking off the edge, they are kicked off abit- so they don't get stuck on the edge (hopping off the edge w/ a little bit of force)
+    //    }
 
-        Vector3 dir = moveDirection;
-        dir.Normalize();
-        origin += dir * groundDirectionRayDistance;
+    //    Vector3 dir = moveDirection;
+    //    dir.Normalize();
+    //    origin += dir * groundDirectionRayDistance;
 
-        targetPosition = myTransform.position;
+    //    targetPosition = myTransform.position;
 
-        Debug.DrawRay(origin, -Vector3.up * minimumDistanceNeededToBeginFall, Color.red, 0.1f, false);
-        if(Physics.Raycast(origin, -Vector3.up, out hit, minimumDistanceNeededToBeginFall, ignoreForGroundCheck))
-        {
-            normalVector = hit.normal;
-            Vector3 tp = hit.point;
-            playerManager.isGrounded = true;
-            targetPosition.y = tp.y;
+    //    Debug.DrawRay(origin, -Vector3.up * minimumDistanceNeededToBeginFall, Color.red, 0.1f, false);
+    //    if(Physics.Raycast(origin, -Vector3.up, out hit, minimumDistanceNeededToBeginFall, ignoreForGroundCheck))
+    //    {
+    //        normalVector = hit.normal;
+    //        Vector3 tp = hit.point;
+    //        playerManager.isGrounded = true;
+    //        targetPosition.y = tp.y;
 
-            if (playerManager.isInAir)
-            {
-                if(inAirTimer > 0.5f)
-                {
-                    Debug.Log("You were in the air for " + inAirTimer);
-                    animHandler.PlayTargetAnimation("Land", true);
-                    inAirTimer = 0;
-                }
-                else
-                {
-                    animHandler.PlayTargetAnimation("Locomotion", false);
-                    inAirTimer = 0;
-                }
+    //        if (playerManager.isInAir)
+    //        {
+    //            if(inAirTimer > 0.5f)
+    //            {
+    //                Debug.Log("You were in the air for " + inAirTimer);
+    //                animHandler.PlayTargetAnimation("Land", true);
+    //                inAirTimer = 0;
+    //            }
+    //            else
+    //            {
+    //                animHandler.PlayTargetAnimation("Locomotion", false);
+    //                inAirTimer = 0;
+    //            }
 
-                playerManager.isInAir = false;
-            }
-        }
-        else
-        {
-            if (playerManager.isGrounded)
-            {
-                playerManager.isGrounded = false;
-            }
+    //            playerManager.isInAir = false;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (playerManager.isGrounded)
+    //        {
+    //            playerManager.isGrounded = false;
+    //        }
 
-            if (!playerManager.isInAir)
-            {
-                if (!playerManager.isInteracting)
-                {
-                    animHandler.PlayTargetAnimation("Falling", true);
-                }
+    //        if (!playerManager.isInAir)
+    //        {
+    //            if (!playerManager.isInteracting)
+    //            {
+    //                animHandler.PlayTargetAnimation("Falling", true);
+    //            }
 
-                Vector3 vel = rigidbody.velocity;
-                vel.Normalize();
-                rigidbody.velocity = vel * (movementSpeed / 2);
-                playerManager.isInAir = true;
-            }
-        }
+    //            Vector3 vel = rigidbody.velocity;
+    //            vel.Normalize();
+    //            rigidbody.velocity = vel * (movementSpeed / 2);
+    //            playerManager.isInAir = true;
+    //        }
+    //    }
 
-        if(playerManager.isInteracting || inputHandler.moveAmout > 0)
-        {
-            myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, delta / 0.1f);
-        }
-        else
-        {
-            myTransform.position = targetPosition;
-        }
-
-        //if (playerManager.isGrounded)
-        //{
-        //    if(playerManager.isInteracting || inputHandler.moveAmout > 0)
-        //    {
-        //        myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, delta);
-        //    }
-        //    else
-        //    {
-        //        myTransform.position = targetPosition;
-        //    }
-        //}
-    }
+    //    if(playerManager.isInteracting || inputHandler.moveAmout > 0)
+    //    {
+    //        myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, delta / 0.1f);
+    //    }
+    //    else
+    //    {
+    //        myTransform.position = targetPosition;
+    //    }
+    //}
 
     #endregion
 
