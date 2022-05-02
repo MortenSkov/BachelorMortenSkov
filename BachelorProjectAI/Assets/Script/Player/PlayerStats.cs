@@ -10,6 +10,13 @@ public class PlayerStats : MonoBehaviour
 
     public HealthBar healthBar;
 
+    AnimationHandler animHandler;
+
+    private void Awake()
+    {
+        animHandler = GetComponentInChildren<AnimationHandler>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +36,15 @@ public class PlayerStats : MonoBehaviour
         currentHealth -= damage;
 
         healthBar.SetCurrentHealth(currentHealth);
+
+        animHandler.PlayTargetAnimation("Damage_01", true);
+
+        if(currentHealth <= 0)
+        {
+            currentHealth = 0;
+            animHandler.PlayTargetAnimation("Dead_01", true);
+            // HANDLE PLAYER DEATH
+        }
     }
 
 
