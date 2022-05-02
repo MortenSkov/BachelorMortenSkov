@@ -17,7 +17,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        cameraHandler = FindObjectOfType<CameraHandler>();
+        cameraHandler = CameraHandler.singleton;
     }
 
     // Start is called before the first frame update
