@@ -12,6 +12,8 @@ public class AnimationHandler : MonoBehaviour
     private int horizontal;
     public bool canRotate;
 
+    DamageCollider damageCollider;
+
     public void Initialize()
     {
         playerManager = GetComponentInParent<PlayerManager>();
@@ -20,6 +22,7 @@ public class AnimationHandler : MonoBehaviour
         playerLocomotion = GetComponentInParent<PlayerLocomotion>();
         vertical = Animator.StringToHash("Vertical");
         horizontal = Animator.StringToHash("Horizontal");
+        damageCollider = GetComponentInChildren<DamageCollider>();
     }
 
     public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement, bool isSprinting)
@@ -87,6 +90,16 @@ public class AnimationHandler : MonoBehaviour
         anim.applyRootMotion = isInteracting;
         anim.SetBool("isInteracting", isInteracting);
         anim.CrossFade(targetAnim, 0.2f);
+    }
+
+    public void OpenDamageCollider()
+    {
+        damageCollider.EnableDamageCollider();
+    }
+
+    public void CloseDamageCollider()
+    {
+        damageCollider.DisableDamageCollider();
     }
 
     public void CanRotate()
