@@ -17,10 +17,12 @@ public class InputHandler : MonoBehaviour
 
     public bool rollFlag;
     public bool sprintFlag;
+    public bool comboFlag;
     public float rollInputTimer;
 
     PlayerControls inputActions; // Made through the installed Unity Package Manager - Input Actions
     PlayerAttack playerAttack;
+    PlayerManager playerManager;
 
     Vector2 movementInput;
     Vector2 cameraInput;
@@ -28,6 +30,7 @@ public class InputHandler : MonoBehaviour
     private void Awake()
     {
         playerAttack = GetComponent<PlayerAttack>();
+        playerManager = GetComponent<PlayerManager>();
     }
 
     public void OnEnable()
@@ -89,9 +92,22 @@ public class InputHandler : MonoBehaviour
         inputActions.PlayerActions.RB.performed += i => rb_Input = true;
         inputActions.PlayerActions.RT.performed += i => rt_Input = true;
 
-        if (rb_Input) // RB Input handles the RIGHT hand weapon's light attack
+        if (rb_Input)
         {
-            playerAttack.HandleLightAttack("LightAttack_01");
+            if (playerManager.canDoCombo)
+            {
+                comboFlag = true;
+                playerAttack.HandleWeaponCombo();
+                comboFlag = false;
+            }
+            else
+            {
+                if (playerManager.isInteracting)
+                    return;
+                if (playerManager.canDoCombo)
+                    return;
+                playerAttack.HandleLightAttack("LightAttack_01");
+            }
         }
 
         if (rt_Input)
