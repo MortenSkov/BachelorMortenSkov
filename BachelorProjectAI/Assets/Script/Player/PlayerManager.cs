@@ -38,19 +38,22 @@ public class PlayerManager : MonoBehaviour
         canDoCombo = anim.GetBool("canDoCombo");
 
         inputHandler.TickInput(delta);
-        playerLocomotion.HandleMovement(delta);
-        playerLocomotion.HandleRollingAndSprinting(delta);
+        //playerLocomotion.HandleMovement(delta);
+        //playerLocomotion.HandleRollingAndSprinting(delta);
     }
 
     private void FixedUpdate()
     {
         float delta = Time.fixedDeltaTime;
 
-        if (cameraHandler != null)
-        {
-            cameraHandler.FollowTarget(delta);
-            cameraHandler.HandleCameraRotation(delta, inputHandler.mouseX, inputHandler.mouseY);
-        }
+        playerLocomotion.HandleMovement(delta);
+        playerLocomotion.HandleRollingAndSprinting(delta);
+
+        //if (cameraHandler != null)
+        //{
+        //    cameraHandler.FollowTarget(delta);
+        //    cameraHandler.HandleCameraRotation(delta, inputHandler.mouseX, inputHandler.mouseY);
+        //}
     }
 
     private void LateUpdate()
@@ -59,6 +62,13 @@ public class PlayerManager : MonoBehaviour
         inputHandler.sprintFlag = false;
         inputHandler.rb_Input = false;
         inputHandler.rt_Input = false;
+
+        float delta = Time.deltaTime;
+        if (cameraHandler != null)
+        {
+            cameraHandler.FollowTarget(delta);
+            cameraHandler.HandleCameraRotation(delta, inputHandler.mouseX, inputHandler.mouseY);
+        }
     }
 
 
