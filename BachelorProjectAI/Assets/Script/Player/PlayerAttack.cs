@@ -6,12 +6,14 @@ public class PlayerAttack : MonoBehaviour
 {
     AnimationHandler animHandler;
     InputHandler inputHandler;
+    PlayerStats playerStats;
     public string lastAttack;
 
     private void Awake()
     {
         animHandler = GetComponentInChildren<AnimationHandler>();
         inputHandler = GetComponent<InputHandler>();
+        playerStats = GetComponent<PlayerStats>();
     }
 
     public void HandleWeaponCombo()
@@ -23,6 +25,7 @@ public class PlayerAttack : MonoBehaviour
             if (lastAttack == "LightAttack_01")
             {
                 animHandler.PlayTargetAnimation("LightAttack_02", true);
+                playerStats.TakeStaminaDamage(20);
             }
         }
     }
@@ -31,6 +34,7 @@ public class PlayerAttack : MonoBehaviour
     {
         animHandler.PlayTargetAnimation(lightAttackName, true);
         lastAttack = lightAttackName;
+        playerStats.TakeStaminaDamage(20);
     }
 
     public void HandleHeavyAttack(string heavyAttackName)
