@@ -36,10 +36,8 @@ public class PlayerManager : MonoBehaviour
         float delta = Time.deltaTime;
         isInteracting = anim.GetBool("isInteracting");
         canDoCombo = anim.GetBool("canDoCombo");
-
         inputHandler.TickInput(delta);
-        //playerLocomotion.HandleMovement(delta);
-        //playerLocomotion.HandleRollingAndSprinting(delta);
+        playerLocomotion.HandleRollingAndSprinting(delta);
     }
 
     private void FixedUpdate()
@@ -47,19 +45,12 @@ public class PlayerManager : MonoBehaviour
         float delta = Time.fixedDeltaTime;
 
         playerLocomotion.HandleMovement(delta);
-        playerLocomotion.HandleRollingAndSprinting(delta);
-
-        //if (cameraHandler != null)
-        //{
-        //    cameraHandler.FollowTarget(delta);
-        //    cameraHandler.HandleCameraRotation(delta, inputHandler.mouseX, inputHandler.mouseY);
-        //}
     }
 
     private void LateUpdate()
     {
         inputHandler.rollFlag = false;
-        inputHandler.sprintFlag = false;
+        //inputHandler.sprintFlag = false;
         inputHandler.rb_Input = false;
         inputHandler.rt_Input = false;
 

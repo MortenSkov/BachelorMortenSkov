@@ -40,6 +40,7 @@ public class InputHandler : MonoBehaviour
             inputActions = new PlayerControls();
             inputActions.PlayerMovement.Movement.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();
             inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
+            //b_Input = inputActions.PlayerActions.Roll.phase == InputActionPhase.Performed; // detects wether or not the 'Roll' input key is being pressed
             inputActions.PlayerActions.RB.performed += i => rb_Input = true;
             inputActions.PlayerActions.RT.performed += i => rt_Input = true;
         }
@@ -71,11 +72,12 @@ public class InputHandler : MonoBehaviour
     private void HandleRollingInput(float delta)
     {
         b_Input = inputActions.PlayerActions.Roll.phase == InputActionPhase.Performed; // detects wether or not the 'Roll' input key is being pressed
+        sprintFlag = b_Input;
 
         if (b_Input)
         {
             rollInputTimer += delta;
-            sprintFlag = true;
+            //sprintFlag = true;
         }
         else
         {
