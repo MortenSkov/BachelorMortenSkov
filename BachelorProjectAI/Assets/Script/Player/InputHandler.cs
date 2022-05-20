@@ -15,6 +15,8 @@ public class InputHandler : MonoBehaviour
     public bool rb_Input;
     public bool rt_Input;
     public bool lockOnInput;
+    public bool right_Stick_Right_Input;
+    public bool right_Stick_Left_Input;
 
     public bool rollFlag;
     public bool sprintFlag;
@@ -47,6 +49,8 @@ public class InputHandler : MonoBehaviour
             inputActions.PlayerActions.RB.performed += i => rb_Input = true;
             inputActions.PlayerActions.RT.performed += i => rt_Input = true;
             inputActions.PlayerActions.LockOn.performed += i => lockOnInput = true;
+            inputActions.PlayerMovement.LockOnTargetRight.performed += i => right_Stick_Right_Input = true;
+            inputActions.PlayerMovement.LockOnTargetLeft.performed += i => right_Stick_Left_Input = true;
         }
 
         inputActions.Enable();
@@ -125,7 +129,6 @@ public class InputHandler : MonoBehaviour
     {
         if(lockOnInput && !lockOnFlag)
         {
-            cameraHandler.ClearLockOnTargets(); // not neccessary
             lockOnInput = false;
             cameraHandler.HandleLockOn();
             if(cameraHandler.nearestLockOnTarget != null)
@@ -139,6 +142,25 @@ public class InputHandler : MonoBehaviour
             lockOnInput = false;
             lockOnFlag = false;
             cameraHandler.ClearLockOnTargets();
+        }
+
+        if(lockOnFlag && right_Stick_Left_Input)
+        {
+            right_Stick_Left_Input = false;
+            cameraHandler.HandleLockOn();
+            if(cameraHandler.leftLockTarget != null)
+            {
+                cameraHandler.currentLockOnTarget = cameraHandler.leftLockTarget;
+            }
+        }
+        else if(lockOnFlag && right_Stick_Right_Input)
+        {
+            right_Stick_Right_Input = false;
+            cameraHandler.HandleLockOn();
+            if(cameraHandler.rightLockTarget != null)
+            {
+                cameraHandler.currentLockOnTarget = cameraHandler.rightLockTarget;
+            }
         }
     }
 
