@@ -64,18 +64,18 @@ public class EnemyLocomotionManager : MonoBehaviour
 
         if (enemyManager.isPerformingAction) // if enemy is performing an action, stop its movement
         {
-            enemyAnimatorManager.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
+            enemyAnimatorManager.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime); // WAS VERTICAL
             navMeshAgent.enabled = false;
         }
         else
         {
             if(distanceFromTarget > stoppingDistance)
             {
-                enemyAnimatorManager.anim.SetFloat("Vertical", 1, 0.1f, Time.deltaTime);
+                enemyAnimatorManager.anim.SetFloat("Vertical", 1, 0.1f, Time.deltaTime); // WAS VERTICAL
             }
             else if (distanceFromTarget <= stoppingDistance)
             {
-                enemyAnimatorManager.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
+                enemyAnimatorManager.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime); // WAS VERTICAL
             }
         }
 
@@ -99,17 +99,17 @@ public class EnemyLocomotionManager : MonoBehaviour
             }
 
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed / Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
         else // Rotate with pathfinding (navmesh)
         {
-            Vector3 relativeDIrection = transform.InverseTransformDirection(navMeshAgent.desiredVelocity);
+            Vector3 relativeDirection = transform.InverseTransformDirection(navMeshAgent.desiredVelocity);
             Vector3 targetVelocity = rb.velocity;
 
             navMeshAgent.enabled = true;
             navMeshAgent.SetDestination(currentTarget.transform.position);
             rb.velocity = targetVelocity;
-            transform.rotation = Quaternion.Slerp(transform.rotation, navMeshAgent.transform.rotation, rotationSpeed / Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, navMeshAgent.transform.rotation, rotationSpeed * Time.deltaTime);
         }
     }
 
