@@ -207,9 +207,6 @@ public class CameraHandler : MonoBehaviour
 
             if (inputHandler.lockOnFlag)
             {
-                //Vector3 relativeEnemyPosition = currentLockOnTarget.transform.InverseTransformPoint(availableTargets[k].transform.position);
-                //float distanceFromLeftTarget = currentLockOnTarget.transform.position.x - availableTargets[k].transform.position.x;
-                //float distanceFromRightTarget = currentLockOnTarget.transform.position.x + availableTargets[k].transform.position.x;
                 Vector3 relativeEnemyPosition = inputHandler.transform.InverseTransformPoint(availableTargets[k].transform.position);
                 var distanceFromLeftTarget = relativeEnemyPosition.x;
                 var distanceFromRightTarget = relativeEnemyPosition.x;
@@ -228,6 +225,8 @@ public class CameraHandler : MonoBehaviour
                 }
             }
         }
+
+        SetCameraHeight();
     }
 
     public void ClearLockOnTargets()
@@ -244,15 +243,6 @@ public class CameraHandler : MonoBehaviour
         Vector3 newUnlockedPostion = new Vector3(0, unlockedPivotPosition);
 
         cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(cameraPivotTransform.transform.localPosition, currentLockOnTarget ? newLockedPosition : newUnlockedPostion, ref velocity, Time.deltaTime);
-
-        //if(currentLockOnTarget != null)
-        //{
-        //    cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(cameraPivotTransform.transform.localPosition, newLockedPosition, ref velocity, Time.deltaTime);
-        //}
-        //else
-        //{
-        //    cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(cameraPivotTransform.transform.localPosition, newUnlockedPostion, ref velocity, Time.deltaTime);
-        //}
     }
 
 }
