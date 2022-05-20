@@ -23,6 +23,11 @@ public class EnemyManager : CharacterManager
 
     private void Update()
     {
+        
+    }
+
+    private void FixedUpdate()
+    {
         HandleCurrentAction();
     }
 
@@ -31,6 +36,10 @@ public class EnemyManager : CharacterManager
         if (!enemyLocomotionManager.currentTarget) // handles detections and finds a potential target
         {
             enemyLocomotionManager.HandleDetection();
+        }
+        else // if enemy DO have a target
+        {
+            enemyLocomotionManager.HandleMoveToTarget();
         }
     }
 

@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationHandler : MonoBehaviour
+public class AnimationHandler : AnimatorManager
 {
     PlayerManager playerManager;
-    public Animator anim;
     InputHandler inputHandler;
     PlayerLocomotion playerLocomotion;
     private int vertical;
@@ -85,13 +84,6 @@ public class AnimationHandler : MonoBehaviour
         anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
     }
 
-    public void PlayTargetAnimation(string targetAnim, bool isInteracting)
-    {
-        anim.applyRootMotion = isInteracting;
-        anim.SetBool("isInteracting", isInteracting);
-        anim.CrossFade(targetAnim, 0.2f);
-    }
-
     public void OpenDamageCollider()
     {
         damageCollider.EnableDamageCollider();
@@ -129,7 +121,7 @@ public class AnimationHandler : MonoBehaviour
 
         float delta = Time.deltaTime;
         playerLocomotion.rigidbody.drag = 0;
-        Vector3 deltaPosition = anim.deltaPosition; // might be causing the 'stuck' issue, since actual position of our avatar isn't moving during the original animation recording
+        Vector3 deltaPosition = anim.deltaPosition;
         deltaPosition.y = 0;
         Vector3 velocity = deltaPosition / delta;
         playerLocomotion.rigidbody.velocity = velocity;
