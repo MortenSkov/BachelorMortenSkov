@@ -162,6 +162,8 @@ public class InputHandler : MonoBehaviour
                 cameraHandler.currentLockOnTarget = cameraHandler.rightLockTarget;
             }
         }
+
+        //cameraHandler.SetCameraHeight();
     }
 
 }

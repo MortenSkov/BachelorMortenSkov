@@ -80,7 +80,7 @@ public class PlayerLocomotion : MonoBehaviour
             else // Player is NOT sprinting or rolling (walking or running)
             {
                 //Vector3 rotationDirection = moveDirection;
-                Vector3 rotationDirection = cameraHandler.currentLockOnTarget.position - transform.position;
+                Vector3 rotationDirection = cameraHandler.currentLockOnTarget.transform.position - transform.position;
                 rotationDirection.y = 0;
                 rotationDirection.Normalize();
                 Quaternion tr = Quaternion.LookRotation(rotationDirection);
