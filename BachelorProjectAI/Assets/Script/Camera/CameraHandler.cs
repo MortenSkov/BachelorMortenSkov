@@ -40,6 +40,8 @@ public class CameraHandler : MonoBehaviour
     public float cameraSphereRadius = 0.2f;
     public float cameraCollisionOffset = 0.2f;
     public float minimumCollisionOffset = 0.2f;
+    public float lockedPivotPosition = 2.25f;
+    public float unlockedPivotPosition = 1.65f;
 
     public Transform currentLockOnTarget;
 
@@ -204,6 +206,24 @@ public class CameraHandler : MonoBehaviour
         availableTargets.Clear();
         nearestLockOnTarget = null;
         currentLockOnTarget = null;
+    }
+
+    public void SetCameraHeight()
+    {
+        Vector3 velocity = Vector3.zero;
+        Vector3 newLockedPosition = new Vector3(0, lockedPivotPosition);
+        Vector3 newUnlockedPostion = new Vector3(0, unlockedPivotPosition);
+
+        cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(cameraPivotTransform.transform.localPosition, currentLockOnTarget ? newLockedPosition : newUnlockedPostion, ref velocity, Time.deltaTime);
+
+        //if(currentLockOnTarget != null)
+        //{
+        //    cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(cameraPivotTransform.transform.localPosition, newLockedPosition, ref velocity, Time.deltaTime);
+        //}
+        //else
+        //{
+        //    cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(cameraPivotTransform.transform.localPosition, newUnlockedPostion, ref velocity, Time.deltaTime);
+        //}
     }
 
 }

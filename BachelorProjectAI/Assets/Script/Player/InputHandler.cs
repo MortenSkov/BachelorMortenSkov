@@ -63,13 +63,13 @@ public class InputHandler : MonoBehaviour
 
     public void TickInput(float delta)
     {
-        MoveInput(delta);
+        HandleMoveInput(delta);
         HandleRollingInput(delta);
         HandleAttackInput(delta);
         HandleLockOnInput();
     }
 
-    private void MoveInput(float delta)
+    private void HandleMoveInput(float delta)
     {
         horizontal = movementInput.x;
         vertical = movementInput.y;
