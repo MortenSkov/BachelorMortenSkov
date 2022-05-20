@@ -14,15 +14,18 @@ public class InputHandler : MonoBehaviour
     public bool b_Input;
     public bool rb_Input;
     public bool rt_Input;
+    public bool lockOnInput;
 
     public bool rollFlag;
     public bool sprintFlag;
     public bool comboFlag;
+    public bool lockOnFlag;
     public float rollInputTimer;
 
     PlayerControls inputActions; // Made through the installed Unity Package Manager - Input Actions
     PlayerAttack playerAttack;
     PlayerManager playerManager;
+    CameraHandler cameraHandler;
 
     Vector2 movementInput;
     Vector2 cameraInput;
@@ -31,6 +34,7 @@ public class InputHandler : MonoBehaviour
     {
         playerAttack = GetComponent<PlayerAttack>();
         playerManager = GetComponent<PlayerManager>();
+        cameraHandler = FindObjectOfType<CameraHandler>();
     }
 
     public void OnEnable()
@@ -40,9 +44,9 @@ public class InputHandler : MonoBehaviour
             inputActions = new PlayerControls();
             inputActions.PlayerMovement.Movement.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();
             inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
-            //b_Input = inputActions.PlayerActions.Roll.phase == InputActionPhase.Performed; // detects wether or not the 'Roll' input key is being pressed
             inputActions.PlayerActions.RB.performed += i => rb_Input = true;
             inputActions.PlayerActions.RT.performed += i => rt_Input = true;
+            inputActions.PlayerActions.LockOn.performed += i => lockOnInput = true;
         }
 
         inputActions.Enable();
@@ -58,6 +62,7 @@ public class InputHandler : MonoBehaviour
         MoveInput(delta);
         HandleRollingInput(delta);
         HandleAttackInput(delta);
+        HandleLockOnInput();
     }
 
     private void MoveInput(float delta)
@@ -77,7 +82,6 @@ public class InputHandler : MonoBehaviour
         if (b_Input)
         {
             rollInputTimer += delta;
-            //sprintFlag = true;
         }
         else
         {
@@ -114,6 +118,27 @@ public class InputHandler : MonoBehaviour
         if (rt_Input)
         {
             playerAttack.HandleHeavyAttack("HeavyAttack_01");
+        }
+    }
+
+    private void HandleLockOnInput()
+    {
+        if(lockOnInput && !lockOnFlag)
+        {
+            cameraHandler.ClearLockOnTargets(); // not neccessary
+            lockOnInput = false;
+            cameraHandler.HandleLockOn();
+            if(cameraHandler.nearestLockOnTarget != null)
+            {
+                cameraHandler.currentLockOnTarget = cameraHandler.nearestLockOnTarget;
+                lockOnFlag = true;
+            }
+        }
+        else if(lockOnInput && lockOnFlag)
+        {
+            lockOnInput = false;
+            lockOnFlag = false;
+            cameraHandler.ClearLockOnTargets();
         }
     }
 
