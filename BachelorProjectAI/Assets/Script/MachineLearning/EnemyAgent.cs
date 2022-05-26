@@ -18,7 +18,8 @@ public class EnemyAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        transform.localPosition = Vector3.zero;
+        transform.localPosition = new Vector3(Random.Range(-3f, 1.5f), 0, Random.Range(-2f, 2f));
+        targetTransform.localPosition = new Vector3(Random.Range(3f, 5f), 0, Random.Range(-2f, 2f));
     }
 
     public override void CollectObservations(VectorSensor sensor)
