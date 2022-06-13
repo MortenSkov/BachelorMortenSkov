@@ -39,9 +39,8 @@ public class EnemyAgent : Agent
         transform.localPosition += moveSpeed * Time.deltaTime * new Vector3(moveX, 0, moveZ);
     }
 
-    public override void Heuristic(in ActionBuffers actionsOut) // modifies the actions that will then be received by the 'OnActionReceived' method
+    public override void Heuristic(in ActionBuffers actionsOut)
     {
-        //base.Heuristic(actionsOut);
         ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
         continuousActions[0] = Input.GetAxisRaw("Horizontal");
         continuousActions[1] = Input.GetAxisRaw("Vertical");
